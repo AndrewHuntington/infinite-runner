@@ -28,6 +28,9 @@ export default class Preloader extends Phaser.Scene {
       "characters/rocket-mouse.png",
       "characters/rocket-mouse.json"
     );
+
+    this.load.image(TextureKeys.LaserEnd, "house/object_laser_end.png");
+    this.load.image(TextureKeys.LaserMiddle, "house/object_laser.png");
   }
 
   create() {

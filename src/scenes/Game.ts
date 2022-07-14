@@ -3,6 +3,7 @@ import TextureKeys from "~/consts/TextureKeys";
 import SceneKeys from "~/consts/SceneKeys";
 import AnimationKeys from "~/consts/AnimationKeys";
 import RocketMouse from "~/game/RocketMouse";
+import LaserObstacle from "~/game/LaserObstacle";
 
 export default class Game extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite;
@@ -117,6 +118,9 @@ export default class Game extends Phaser.Scene {
       .setOrigin(0, 0)
       .setScrollFactor(0, 0);
 
+    /**
+     * Create house decorations
+     */
     // create the mouse hole
     this.mouseHole = this.add.image(
       Phaser.Math.Between(900, 1500), // x value
@@ -150,6 +154,15 @@ export default class Game extends Phaser.Scene {
 
     this.bookcases = [this.bookcase1, this.bookcase2];
 
+    /**
+     * Create laser obstacle
+     */
+    const laserObstacle = new LaserObstacle(this, 900, 100);
+    this.add.existing(laserObstacle);
+
+    /**
+     * Create mouse character
+     */
     const mouse = new RocketMouse(this, width * 0.5, height - 30);
     this.add.existing(mouse);
 
