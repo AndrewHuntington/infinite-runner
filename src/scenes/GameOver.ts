@@ -31,6 +31,8 @@ export default class GameOver extends Phaser.Scene {
         this.scene.stop(SceneKeys.GameOver);
 
         // stop and restart the Game scene
+        // * This may not be the best way to do this
+        // * See page 76 for more details
         this.scene.stop(SceneKeys.Game);
         this.scene.start(SceneKeys.Game);
   })
