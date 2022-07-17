@@ -109,8 +109,6 @@ export default class Game extends Phaser.Scene {
       });
 
       this.bookcase2.visible = !overlap;
-
-      this.spawnCoins();
     }
   }
 
@@ -202,6 +200,50 @@ export default class Game extends Phaser.Scene {
     this.score += 1;
 
     this.scoreLabel.text = `Score: ${this.score}`;
+  }
+
+  private teleportBackwards() {
+    const scrollX = this.cameras.main.scrollX;
+    const maxX = 2380;
+
+    // perform a teleport once scrolled beyond 2380
+    if (scrollX > maxX) {
+      // teleport the mouse and mousehole
+      this.mouse.x -= maxX;
+      this.mouseHole.x -= maxX;
+
+      // teleport each window
+      this.windows.forEach((win) => {
+        win.x -= maxX;
+      });
+
+      // teleport each bookcase
+      this.bookcases.forEach((bc) => {
+        bc.x -= maxX;
+      });
+
+      // teleport the laser
+      this.laserObstacle.x -= maxX;
+      const laserBody = this.laserObstacle
+        .body as Phaser.Physics.Arcade.StaticBody;
+
+      // as well as the laser physics body
+      laserBody.x -= maxX;
+
+      this.spawnCoins();
+
+      // teleport any spawned coins
+      this.coins.children.each((child) => {
+        const coin = child as Phaser.Physics.Arcade.Sprite;
+        if (!coin.active) {
+          return;
+        }
+
+        coin.x -= maxX;
+        const body = coin.body as Phaser.Physics.Arcade.StaticBody;
+        body.updateFromGameObject();
+      });
+    }
   }
 
   init() {
@@ -320,5 +362,6 @@ export default class Game extends Phaser.Scene {
     this.wrapBookcases();
     this.wrapLaserObstacle();
     this.background.setTilePosition(this.cameras.main.scrollX);
+    this.teleportBackwards();
   }
 }
