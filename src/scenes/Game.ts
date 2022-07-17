@@ -20,10 +20,6 @@ export default class Game extends Phaser.Scene {
   private scoreLabel!: Phaser.GameObjects.Text;
   private score = 0;
 
-  init() {
-    this.score = 0;
-  }
-
   constructor() {
     super(SceneKeys.Game);
   }
@@ -113,6 +109,8 @@ export default class Game extends Phaser.Scene {
       });
 
       this.bookcase2.visible = !overlap;
+
+      this.spawnCoins();
     }
   }
 
@@ -180,6 +178,9 @@ export default class Game extends Phaser.Scene {
       body.setCircle(body.width * 0.5);
       body.enable = true;
 
+      // update the body x, y position from the GameObject
+      body.updateFromGameObject();
+
       // move x a random amount
       x += coin.width * 1.5;
     }
@@ -201,6 +202,10 @@ export default class Game extends Phaser.Scene {
     this.score += 1;
 
     this.scoreLabel.text = `Score: ${this.score}`;
+  }
+
+  init() {
+    this.score = 0;
   }
 
   create() {
